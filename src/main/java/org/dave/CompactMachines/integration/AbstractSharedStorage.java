@@ -1,31 +1,32 @@
-package org.dave.CompactMachines.integration;
+package org.dave.compactmachines.integration;
 
-import org.dave.CompactMachines.handler.SharedStorageHandler;
+import org.dave.compactmachines.handler.SharedStorageHandler;
 
 public abstract class AbstractSharedStorage {
-	public final SharedStorageHandler	storageHandler;
 
-	public int							coord;
-	public int							side;
+    public final SharedStorageHandler storageHandler;
 
-	public AbstractSharedStorage(SharedStorageHandler storageHandler, int coord, int side) {
-		this.storageHandler = storageHandler;
-		this.coord = coord;
-		this.side = side;
-	}
+    public int coord;
+    public int side;
 
-	public abstract String type();
+    public AbstractSharedStorage(SharedStorageHandler storageHandler, int coord, int side) {
+        this.storageHandler = storageHandler;
+        this.coord = coord;
+        this.side = side;
+    }
 
-	public int getSide() {
-		return this.side;
-	}
+    public abstract String type();
 
-	public int getCoord() {
-		return this.coord;
-	}
+    public int getSide() {
+        return this.side;
+    }
 
-	public SharedStorageHandler getHandler() {
-		return this.storageHandler;
-	}
+    public int getCoord() {
+        return this.coord;
+    }
+
+    public SharedStorageHandler getHandler() {
+        return this.storageHandler;
+    }
 
 }

@@ -1,36 +1,29 @@
-package org.dave.CompactMachines.proxy;
+package org.dave.compactmachines.proxy;
 
 import net.minecraftforge.client.MinecraftForgeClient;
 
-import org.dave.CompactMachines.client.render.RenderPersonalShrinkingDevice;
-import org.dave.CompactMachines.handler.ConfigurationHandler;
-import org.dave.CompactMachines.igw.IGWSupportNotifier;
-import org.dave.CompactMachines.init.ModItems;
-import org.dave.CompactMachines.reference.Textures;
+import org.dave.compactmachines.client.render.RenderPersonalShrinkingDevice;
+import org.dave.compactmachines.handler.ConfigurationHandler;
+import org.dave.compactmachines.init.ModItems;
+import org.dave.compactmachines.reference.Textures;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
-public class ClientProxy extends CommonProxy
-{
-	@Override
-	public void registerHandlers() {
-		FMLInterModComms.sendMessage("IGWMod", "org.dave.CompactMachines.igw.IGWHandler", "init");
-		new IGWSupportNotifier();
-	}
+public class ClientProxy extends CommonProxy {
 
-	@Override
-	public void registerVillagerSkins() {
-		VillagerRegistry.instance().registerVillagerSkin(ConfigurationHandler.villagerId, Textures.Entities.VILLAGER);
-	}
+    @Override
+    public void registerVillagerSkins() {
+        VillagerRegistry.instance()
+            .registerVillagerSkin(ConfigurationHandler.villagerId, Textures.Entities.VILLAGER);
+    }
 
-	@Override
-	public void registerRenderers() {
-		MinecraftForgeClient.registerItemRenderer(ModItems.psd, new RenderPersonalShrinkingDevice());
-	}
+    @Override
+    public void registerRenderers() {
+        MinecraftForgeClient.registerItemRenderer(ModItems.psd, new RenderPersonalShrinkingDevice());
+    }
 
-	@Override
-	public boolean isClient() {
-		return true;
-	}
+    @Override
+    public boolean isClient() {
+        return true;
+    }
 }

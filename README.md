@@ -1,3 +1,9 @@
+Compact Machines Fork
+=====================
+This is an attempt at a fork of the 1.7.10 version of [Compact Machines](https://github.com/CompactMods/CompactMachines).
+
+The loose goal right now is to get it working in a more modern 1.7.10 development environment(AKA GTNH buildscript and such), then start seeing what might be worth backporting from newer versions of the mod.
+
 Compact Machines [![Build Status](https://travis-ci.org/thraaawn/CompactMachines.svg?branch=master)](https://travis-ci.org/thraaawn/CompactMachines)
 ================
 

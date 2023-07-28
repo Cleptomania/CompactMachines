@@ -1,4 +1,4 @@
-package org.dave.CompactMachines.proxy;
+package org.dave.compactmachines.proxy;
 
-public class ServerProxy extends CommonProxy
-{}
+public class ServerProxy extends CommonProxy {
+}

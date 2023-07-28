@@ -1,6 +1,6 @@
-package org.dave.CompactMachines.reference;
+package org.dave.compactmachines.reference;
 
 public enum GuiId {
-	MACHINE,
-	INTERFACE
+    MACHINE,
+    INTERFACE
 }

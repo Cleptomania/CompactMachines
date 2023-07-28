@@ -1,39 +1,40 @@
-package org.dave.CompactMachines.integration;
+package org.dave.compactmachines.integration;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import org.dave.CompactMachines.handler.SharedStorageHandler;
+import org.dave.compactmachines.handler.SharedStorageHandler;
 
 public abstract class AbstractBufferedStorage extends AbstractSharedStorage {
-	private boolean	dirty;
-	private int		changeCount;
 
-	public AbstractBufferedStorage(SharedStorageHandler storageHandler, int coord, int side) {
-		super(storageHandler, coord, side);
-	}
+    private boolean dirty;
+    private int changeCount;
 
-	public void setDirty() {
-		if (storageHandler.client) {
-			return;
-		}
+    public AbstractBufferedStorage(SharedStorageHandler storageHandler, int coord, int side) {
+        super(storageHandler, coord, side);
+    }
 
-		if (!dirty) {
-			dirty = true;
-			storageHandler.requestSave(this);
-		}
+    public void setDirty() {
+        if (storageHandler.client) {
+            return;
+        }
 
-		changeCount++;
-	}
+        if (!dirty) {
+            dirty = true;
+            storageHandler.requestSave(this);
+        }
 
-	public void setClean() {
-		dirty = false;
-	}
+        changeCount++;
+    }
 
-	public int getChangeCount() {
-		return changeCount;
-	}
+    public void setClean() {
+        dirty = false;
+    }
 
-	public abstract NBTTagCompound saveToTag();
+    public int getChangeCount() {
+        return changeCount;
+    }
 
-	public abstract void loadFromTag(NBTTagCompound tag);
+    public abstract NBTTagCompound saveToTag();
+
+    public abstract void loadFromTag(NBTTagCompound tag);
 }

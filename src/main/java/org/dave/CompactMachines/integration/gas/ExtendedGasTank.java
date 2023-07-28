@@ -1,41 +1,42 @@
-package org.dave.CompactMachines.integration.gas;
+package org.dave.compactmachines.integration.gas;
+
+import org.dave.compactmachines.handler.ConfigurationHandler;
 
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTank;
 
-import org.dave.CompactMachines.handler.ConfigurationHandler;
-
 public class ExtendedGasTank extends GasTank {
-	public ExtendedGasTank() {
-		super(ConfigurationHandler.capacityGas);
-	}
 
-	public void onGasChanged() {};
+    public ExtendedGasTank() {
+        super(ConfigurationHandler.capacityGas);
+    }
 
-	@Override
-	public GasStack draw(int amount, boolean doDraw) {
-		GasStack drawn = super.draw(amount, doDraw);
+    public void onGasChanged() {};
 
-		if (doDraw && drawn != null && drawn.amount > 0) {
-			onGasChanged();
-		}
+    @Override
+    public GasStack draw(int amount, boolean doDraw) {
+        GasStack drawn = super.draw(amount, doDraw);
 
-		return drawn;
-	}
+        if (doDraw && drawn != null && drawn.amount > 0) {
+            onGasChanged();
+        }
 
-	@Override
-	public int receive(GasStack stack, boolean doReceive) {
-		int received = super.receive(stack, doReceive);
+        return drawn;
+    }
 
-		if (doReceive && received > 0) {
-			onGasChanged();
-		}
+    @Override
+    public int receive(GasStack stack, boolean doReceive) {
+        int received = super.receive(stack, doReceive);
 
-		return received;
-	}
+        if (doReceive && received > 0) {
+            onGasChanged();
+        }
 
-	@Override
-	public int getMaxGas() {
-		return ConfigurationHandler.capacityGas;
-	}
+        return received;
+    }
+
+    @Override
+    public int getMaxGas() {
+        return ConfigurationHandler.capacityGas;
+    }
 }

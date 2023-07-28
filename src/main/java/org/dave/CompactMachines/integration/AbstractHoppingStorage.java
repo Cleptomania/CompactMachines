@@ -1,64 +1,65 @@
-package org.dave.CompactMachines.integration;
+package org.dave.compactmachines.integration;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import org.dave.CompactMachines.handler.SharedStorageHandler;
+import org.dave.compactmachines.handler.SharedStorageHandler;
 
 public abstract class AbstractHoppingStorage extends AbstractBufferedStorage {
-	private int		hoppingMode;			// 0 - Off, 1 - To the inside, 2 - To the outside, 3 - Auto, 4 - Both/Always
-	private boolean	autoHopToInside;
 
-	protected int	max_cooldown	= 20;
-	private int		cooldown		= 0;
+    private int hoppingMode; // 0 - Off, 1 - To the inside, 2 - To the outside, 3 - Auto, 4 - Both/Always
+    private boolean autoHopToInside;
 
-	public AbstractHoppingStorage(SharedStorageHandler storageHandler, int coord, int side) {
-		super(storageHandler, coord, side);
+    protected int max_cooldown = 20;
+    private int cooldown = 0;
 
-		this.hoppingMode = 0;
-		this.autoHopToInside = false;
-	}
+    public AbstractHoppingStorage(SharedStorageHandler storageHandler, int coord, int side) {
+        super(storageHandler, coord, side);
 
-	public int getHoppingMode() {
-		return this.hoppingMode;
-	}
+        this.hoppingMode = 0;
+        this.autoHopToInside = false;
+    }
 
-	public void setHoppingMode(int mode) {
-		this.hoppingMode = mode;
-	}
+    public int getHoppingMode() {
+        return this.hoppingMode;
+    }
 
-	public boolean isAutoHoppingToInside() {
-		return autoHopToInside;
-	}
+    public void setHoppingMode(int mode) {
+        this.hoppingMode = mode;
+    }
 
-	public void setAutoHoppingToInside(boolean state) {
-		this.autoHopToInside = state;
-	}
+    public boolean isAutoHoppingToInside() {
+        return autoHopToInside;
+    }
 
-	@Override
-	public NBTTagCompound saveToTag() {
-		NBTTagCompound compound = new NBTTagCompound();
-		compound.setInteger("hoppingMode", hoppingMode);
-		compound.setBoolean("autoToInside", autoHopToInside);
-		return compound;
-	}
+    public void setAutoHoppingToInside(boolean state) {
+        this.autoHopToInside = state;
+    }
 
-	@Override
-	public void loadFromTag(NBTTagCompound tag) {
-		hoppingMode = tag.getInteger("hoppingMode");
-		autoHopToInside = tag.getBoolean("autoToInside");
-	}
+    @Override
+    public NBTTagCompound saveToTag() {
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setInteger("hoppingMode", hoppingMode);
+        compound.setBoolean("autoToInside", autoHopToInside);
+        return compound;
+    }
 
-	public void hoppingTick(TileEntity target, boolean useOppositeSide) {
-		if (cooldown == max_cooldown) {
-			cooldown = 0;
-		} else {
-			cooldown++;
-			return;
-		}
+    @Override
+    public void loadFromTag(NBTTagCompound tag) {
+        hoppingMode = tag.getInteger("hoppingMode");
+        autoHopToInside = tag.getBoolean("autoToInside");
+    }
 
-		hopToTileEntity(target, useOppositeSide);
-	}
+    public void hoppingTick(TileEntity target, boolean useOppositeSide) {
+        if (cooldown == max_cooldown) {
+            cooldown = 0;
+        } else {
+            cooldown++;
+            return;
+        }
 
-	public abstract void hopToTileEntity(TileEntity target, boolean useOppositeSide);
+        hopToTileEntity(target, useOppositeSide);
+    }
+
+    public abstract void hopToTileEntity(TileEntity target, boolean useOppositeSide);
 }

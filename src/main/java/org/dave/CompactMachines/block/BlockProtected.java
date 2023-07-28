@@ -1,4 +1,4 @@
-package org.dave.CompactMachines.block;
+package org.dave.compactmachines.block;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
@@ -9,55 +9,55 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.dave.CompactMachines.item.ItemAtomShrinker;
+import org.dave.compactmachines.item.ItemAtomShrinker;
 
 public class BlockProtected extends BlockCM {
-	public BlockProtected()
-	{
-		super();
-		this.setBlockUnbreakable();
-		this.setResistance(6000000.0F);
-	}
 
-	// Prevent players from breaking the block except when they carry an Atom Shrinker and
-	// are in creative mode. Why did I make this so awkward?
-	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-		if (!world.isRemote && player instanceof EntityPlayerMP && player.capabilities.isCreativeMode) {
-			ItemStack playerStack = player.getCurrentEquippedItem();
-			if (playerStack != null && playerStack.getItem() instanceof ItemAtomShrinker) {
-				return super.removedByPlayer(world, player, x, y, z);
-			}
-		}
+    public BlockProtected() {
+        super();
+        this.setBlockUnbreakable();
+        this.setResistance(6000000.0F);
+    }
 
-		return false;
-	}
+    // Prevent players from breaking the block except when they carry an Atom Shrinker and
+    // are in creative mode. Why did I make this so awkward?
+    @Override
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+        if (!world.isRemote && player instanceof EntityPlayerMP && player.capabilities.isCreativeMode) {
+            ItemStack playerStack = player.getCurrentEquippedItem();
+            if (playerStack != null && playerStack.getItem() instanceof ItemAtomShrinker) {
+                return super.removedByPlayer(world, player, x, y, z);
+            }
+        }
 
-	// Prevent entities from destroying the block
-	@Override
-	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-		return false;
-	}
+    // Prevent entities from destroying the block
+    @Override
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+        return false;
+    }
 
-	// Well, why not...
-	@Override
-	public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
-		return false;
-	}
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
 
-	@Override
-	public boolean canDropFromExplosion(Explosion explosion) {
-		return false;
-	}
+    // Well, why not...
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
 
-	@Override
-	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
-		return;
-	}
+    @Override
+    public boolean canDropFromExplosion(Explosion explosion) {
+        return false;
+    }
+
+    @Override
+    public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
+        return;
+    }
 
 }

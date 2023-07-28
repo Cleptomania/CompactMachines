@@ -1,10 +1,11 @@
-package org.dave.CompactMachines.item;
+package org.dave.compactmachines.item;
 
-import org.dave.CompactMachines.reference.Names;
+import org.dave.compactmachines.reference.Names;
 
 public class ItemAtomEnlarger extends ItemCM {
-	public ItemAtomEnlarger() {
-		super();
-		this.setUnlocalizedName(Names.Items.ENLARGER);
-	}
+
+    public ItemAtomEnlarger() {
+        super();
+        this.setUnlocalizedName(Names.Items.ENLARGER);
+    }
 }

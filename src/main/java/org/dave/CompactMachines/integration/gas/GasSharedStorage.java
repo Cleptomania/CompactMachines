@@ -1,146 +1,147 @@
-package org.dave.CompactMachines.integration.gas;
+package org.dave.compactmachines.integration.gas;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.dave.CompactMachines.handler.ConfigurationHandler;
-import org.dave.CompactMachines.handler.SharedStorageHandler;
-import org.dave.CompactMachines.integration.AbstractHoppingStorage;
-import org.dave.CompactMachines.reference.Reference;
+import org.dave.compactmachines.handler.ConfigurationHandler;
+import org.dave.compactmachines.handler.SharedStorageHandler;
+import org.dave.compactmachines.integration.AbstractHoppingStorage;
+import org.dave.compactmachines.reference.Reference;
 
 import cpw.mods.fml.common.Optional;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
 
 @Optional.Interface(iface = "mekanism.api.gas.IGasHandler", modid = "Mekanism")
 public class GasSharedStorage extends AbstractHoppingStorage implements IGasHandler {
-	private ExtendedGasTank		tank;
 
-	public GasSharedStorage(SharedStorageHandler storageHandler, int coord, int side) {
-		super(storageHandler, coord, side);
+    private ExtendedGasTank tank;
 
-		if(Reference.MEK_AVAILABLE) {
-			tank = new ExtendedGasTank() {
-				@Override
-				public void onGasChanged() {
-					setDirty();
-				}
-			};
-		}
+    public GasSharedStorage(SharedStorageHandler storageHandler, int coord, int side) {
+        super(storageHandler, coord, side);
 
-		max_cooldown = ConfigurationHandler.cooldownGas;
-	}
+        if (Reference.MEK_AVAILABLE) {
+            tank = new ExtendedGasTank() {
 
-	public GasStack getGasContents() {
-		if(!ConfigurationHandler.enableIntegrationMekanism) {
-			return null;
-		}
+                @Override
+                public void onGasChanged() {
+                    setDirty();
+                }
+            };
+        }
 
-		GasStack gas = tank.getGas();
+        max_cooldown = ConfigurationHandler.cooldownGas;
+    }
 
-		if (gas != null) {
-			// Return a copy so tank contents cannot be externally modified
-			gas = gas.copy();
-		}
+    public GasStack getGasContents() {
+        if (!ConfigurationHandler.enableIntegrationMekanism) {
+            return null;
+        }
 
-		return gas;
-	}
+        GasStack gas = tank.getGas();
 
-	@Override
-	public int receiveGas(ForgeDirection side, GasStack stack) {
-		if(!ConfigurationHandler.enableIntegrationMekanism) {
-			return 0;
-		}
+        if (gas != null) {
+            // Return a copy so tank contents cannot be externally modified
+            gas = gas.copy();
+        }
 
-		return tank.receive(stack, true);
-	}
+        return gas;
+    }
 
-	@Override
-	public GasStack drawGas(ForgeDirection side, int amount) {
-		if(!ConfigurationHandler.enableIntegrationMekanism) {
-			return null;
-		}
-		return tank.draw(amount, true);
-	}
+    @Override
+    public int receiveGas(ForgeDirection side, GasStack stack) {
+        if (!ConfigurationHandler.enableIntegrationMekanism) {
+            return 0;
+        }
 
-	@Override
-	public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer) {
-		return this.receiveGas(side, stack);
-	}
+        return tank.receive(stack, true);
+    }
 
-	@Override
-	public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer) {
-		return this.drawGas(side, amount);
-	}
+    @Override
+    public GasStack drawGas(ForgeDirection side, int amount) {
+        if (!ConfigurationHandler.enableIntegrationMekanism) {
+            return null;
+        }
+        return tank.draw(amount, true);
+    }
 
+    @Override
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer) {
+        return this.receiveGas(side, stack);
+    }
 
-	@Override
-	public boolean canReceiveGas(ForgeDirection side, Gas gas) {
-		if(!ConfigurationHandler.enableIntegrationMekanism) {
-			return false;
-		}
-		return tank.canReceive(gas);
-	}
+    @Override
+    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer) {
+        return this.drawGas(side, amount);
+    }
 
-	@Override
-	public boolean canDrawGas(ForgeDirection side, Gas gas) {
-		if(!ConfigurationHandler.enableIntegrationMekanism) {
-			return false;
-		}
-		return tank.canDraw(gas);
-	}
+    @Override
+    public boolean canReceiveGas(ForgeDirection side, Gas gas) {
+        if (!ConfigurationHandler.enableIntegrationMekanism) {
+            return false;
+        }
+        return tank.canReceive(gas);
+    }
 
-	@Override
-	public String type() {
-		return "gas";
-	}
+    @Override
+    public boolean canDrawGas(ForgeDirection side, Gas gas) {
+        if (!ConfigurationHandler.enableIntegrationMekanism) {
+            return false;
+        }
+        return tank.canDraw(gas);
+    }
 
-	@Override
-	public NBTTagCompound saveToTag() {
-		NBTTagCompound compound = super.saveToTag();
-		compound.setTag("tank", tank.write(new NBTTagCompound()));
+    @Override
+    public String type() {
+        return "gas";
+    }
 
-		return compound;
-	}
+    @Override
+    public NBTTagCompound saveToTag() {
+        NBTTagCompound compound = super.saveToTag();
+        compound.setTag("tank", tank.write(new NBTTagCompound()));
 
-	@Override
-	public void loadFromTag(NBTTagCompound tag) {
-		super.loadFromTag(tag);
-		tank.read(tag.getCompoundTag("tank"));
-	}
+        return compound;
+    }
 
-	@Override
-	public void hopToTileEntity(TileEntity te, boolean opposite) {
-		GasStack stack = tank.getGas();
+    @Override
+    public void loadFromTag(NBTTagCompound tag) {
+        super.loadFromTag(tag);
+        tank.read(tag.getCompoundTag("tank"));
+    }
 
-		if (stack == null || stack.amount == 0) {
-			return;
-		}
+    @Override
+    public void hopToTileEntity(TileEntity te, boolean opposite) {
+        GasStack stack = tank.getGas();
 
-		stack = stack.copy();
+        if (stack == null || stack.amount == 0) {
+            return;
+        }
 
-		if (te instanceof IGasHandler) {
-			IGasHandler gh = (IGasHandler) te;
+        stack = stack.copy();
 
-			ForgeDirection hoppingSide = ForgeDirection.getOrientation(side);
+        if (te instanceof IGasHandler) {
+            IGasHandler gh = (IGasHandler) te;
 
-			if (opposite) {
-				hoppingSide = hoppingSide.getOpposite();
-			}
+            ForgeDirection hoppingSide = ForgeDirection.getOrientation(side);
 
-			if (gh.canReceiveGas(hoppingSide, stack.getGas())) {
-				int received = gh.receiveGas(hoppingSide, stack, true);
+            if (opposite) {
+                hoppingSide = hoppingSide.getOpposite();
+            }
 
-				if (received > 0) {
-					this.tank.draw(received, true);
+            if (gh.canReceiveGas(hoppingSide, stack.getGas())) {
+                int received = gh.receiveGas(hoppingSide, stack, true);
 
-					te.markDirty();
-				}
-			}
+                if (received > 0) {
+                    this.tank.draw(received, true);
 
-		}
+                    te.markDirty();
+                }
+            }
 
-	}
+        }
+
+    }
 }

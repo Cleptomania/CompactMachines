@@ -1,115 +1,124 @@
-package org.dave.CompactMachines.integration.appeng;
+package org.dave.compactmachines.integration.appeng;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.dave.CompactMachines.handler.SharedStorageHandler;
-import org.dave.CompactMachines.integration.AbstractSharedStorage;
-import org.dave.CompactMachines.reference.Reference;
-import org.dave.CompactMachines.utility.WorldUtils;
+import org.dave.compactmachines.handler.SharedStorageHandler;
+import org.dave.compactmachines.integration.AbstractSharedStorage;
+import org.dave.compactmachines.reference.Reference;
+import org.dave.compactmachines.utility.WorldUtils;
 
 import appeng.api.AEApi;
 import appeng.api.exceptions.FailedConnection;
 import appeng.api.networking.IGridNode;
 
 public class AESharedStorage extends AbstractSharedStorage {
-	public int			coord;
-	public int			side;
 
-	public HashMap<Integer, Boolean> isConnected;
-	public HashMap<Integer, IGridNode>	machineNodes;
-	public IGridNode	interfaceNode;
+    public int coord;
+    public int side;
 
-	public String random = UUID.randomUUID().toString();
+    public HashMap<Integer, Boolean> isConnected;
+    public HashMap<Integer, IGridNode> machineNodes;
+    public IGridNode interfaceNode;
 
-	public AESharedStorage(SharedStorageHandler storageHandler, int coord, int side) {
-		super(storageHandler, coord, side);
+    public String random = UUID.randomUUID()
+        .toString();
 
-		this.side = side;
-		this.coord = coord;
+    public AESharedStorage(SharedStorageHandler storageHandler, int coord, int side) {
+        super(storageHandler, coord, side);
 
-		if(machineNodes == null) {
-			machineNodes = new HashMap<Integer, IGridNode>();
-		}
+        this.side = side;
+        this.coord = coord;
 
-		if(isConnected == null) {
-			isConnected = new HashMap<Integer, Boolean>();
-		}
-	}
+        if (machineNodes == null) {
+            machineNodes = new HashMap<Integer, IGridNode>();
+        }
 
-	@Override
-	public String type() {
-		return "appeng";
-	}
+        if (isConnected == null) {
+            isConnected = new HashMap<Integer, Boolean>();
+        }
+    }
 
-	public void connectNodes(int entangledInstance) {
+    @Override
+    public String type() {
+        return "appeng";
+    }
 
-		if (interfaceNode == null || machineNodes == null || machineNodes.get(entangledInstance) == null) {
-			return;
-		}
+    public void connectNodes(int entangledInstance) {
 
-		if (isConnected != null && isConnected.containsKey(entangledInstance)) {
-			return;
-		}
+        if (interfaceNode == null || machineNodes == null || machineNodes.get(entangledInstance) == null) {
+            return;
+        }
 
-		if (!Reference.AE_AVAILABLE) {
-			return;
-		}
+        if (isConnected != null && isConnected.containsKey(entangledInstance)) {
+            return;
+        }
 
-		try {
-			AEApi.instance().createGridConnection(interfaceNode, machineNodes.get(entangledInstance));
-			isConnected.put(entangledInstance, true);
-		} catch (FailedConnection e) {
-		}
-	}
+        if (!Reference.AE_AVAILABLE) {
+            return;
+        }
 
-	public void connectAll() {
-		if(machineNodes == null) {
-			return;
-		}
+        try {
+            AEApi.instance()
+                .createGridConnection(interfaceNode, machineNodes.get(entangledInstance));
+            isConnected.put(entangledInstance, true);
+        } catch (FailedConnection e) {}
+    }
 
-		for(int entangledIndex : machineNodes.keySet()) {
-			if(!isConnected.containsKey(entangledIndex) || !isConnected.get(entangledIndex)) {
-				connectNodes(entangledIndex);
-			}
-		}
+    public void connectAll() {
+        if (machineNodes == null) {
+            return;
+        }
 
-	}
+        for (int entangledIndex : machineNodes.keySet()) {
+            if (!isConnected.containsKey(entangledIndex) || !isConnected.get(entangledIndex)) {
+                connectNodes(entangledIndex);
+            }
+        }
 
-	public IGridNode getInterfaceNode(CMGridBlock gridBlock) {
-		if (interfaceNode == null) {
-			interfaceNode = AEApi.instance().createGridNode(gridBlock);
-			interfaceNode.updateState();
-		}
+    }
 
-		connectAll();
+    public IGridNode getInterfaceNode(CMGridBlock gridBlock) {
+        if (interfaceNode == null) {
+            interfaceNode = AEApi.instance()
+                .createGridNode(gridBlock);
+            interfaceNode.updateState();
+        }
 
-		return interfaceNode;
-	}
+        connectAll();
 
-	public void destroyMachineNode(int entangledIndex) {
-		IGridNode machineNode = machineNodes.get(entangledIndex);
-		if (machineNode != null) {
-			machineNode.destroy();
-			machineNodes.remove(entangledIndex);
-			isConnected.remove(entangledIndex);
-		}
+        return interfaceNode;
+    }
 
-		connectAll();
-	}
+    public void destroyMachineNode(int entangledIndex) {
+        IGridNode machineNode = machineNodes.get(entangledIndex);
+        if (machineNode != null) {
+            machineNode.destroy();
+            machineNodes.remove(entangledIndex);
+            isConnected.remove(entangledIndex);
+        }
 
-	public IGridNode getMachineNode(CMGridBlock gridBlock, int entangledIndex) {
-		IGridNode machineNode = machineNodes.get(entangledIndex);
-		if (machineNode == null) {
-			machineNode = AEApi.instance().createGridNode(gridBlock);
-			machineNode.updateState();
+        connectAll();
+    }
 
-			machineNodes.put(entangledIndex, machineNode);
+    public IGridNode getMachineNode(CMGridBlock gridBlock, int entangledIndex) {
+        IGridNode machineNode = machineNodes.get(entangledIndex);
+        if (machineNode == null) {
+            machineNode = AEApi.instance()
+                .createGridNode(gridBlock);
+            machineNode.updateState();
 
-			// Update neighbor blocks since we are now having a gridnode
-			WorldUtils.updateNeighborAEGrids(gridBlock.getLocation().getWorld(), gridBlock.getLocation().x, gridBlock.getLocation().y, gridBlock.getLocation().z);
-		}
+            machineNodes.put(entangledIndex, machineNode);
 
-		return machineNode;
-	}
+            // Update neighbor blocks since we are now having a gridnode
+            WorldUtils.updateNeighborAEGrids(
+                gridBlock.getLocation()
+                    .getWorld(),
+                gridBlock.getLocation().x,
+                gridBlock.getLocation().y,
+                gridBlock.getLocation().z);
+        }
+
+        return machineNode;
+    }
 }

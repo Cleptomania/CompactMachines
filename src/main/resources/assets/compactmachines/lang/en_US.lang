@@ -50,9 +50,6 @@ msg.message_quantum_entanglement_disabled.txt=Quantum Entanglement is disabled, 
 msg.message_machine_not_in_use.txt=Can not entangle: Machine has never been used before.
 msg.message_spawnpoint_set.txt=Spawnpoint set to your current location.
 
-# IGW Mod Pages
-igwpage.basics=Introduction
-
 # Commands
 command.cm.setCMCoords.usage=/setCMCoords <room-id>
 command.cm.setCMCoords.noblock=You need to hold a CM block in your hand to use this command.

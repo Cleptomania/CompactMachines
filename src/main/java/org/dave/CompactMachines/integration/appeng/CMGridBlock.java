@@ -1,11 +1,11 @@
-package org.dave.CompactMachines.integration.appeng;
+package org.dave.compactmachines.integration.appeng;
 
 import java.util.EnumSet;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.dave.CompactMachines.tileentity.TileEntityCM;
+import org.dave.compactmachines.tileentity.TileEntityCM;
 
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.GridNotification;
@@ -18,67 +18,70 @@ import cpw.mods.fml.common.Optional;
 
 @Optional.Interface(iface = "appeng.api.networking.IGridBlock", modid = "appliedenergistics2")
 public class CMGridBlock implements IGridBlock {
-	protected TileEntityCM	gridHost;
 
-	public CMGridBlock(TileEntityCM gridHost) {
-		this.gridHost = gridHost;
-	}
+    protected TileEntityCM gridHost;
 
-	@Override
-	public double getIdlePowerUsage() {
-		return 0;
-	}
+    public CMGridBlock(TileEntityCM gridHost) {
+        this.gridHost = gridHost;
+    }
 
-	@Override
-	public EnumSet<GridFlags> getFlags() {
-		return EnumSet.of(GridFlags.DENSE_CAPACITY);
-	}
+    @Override
+    public double getIdlePowerUsage() {
+        return 0;
+    }
 
-	public boolean isWorldAccessable() {
-		return false;
-	}
+    @Override
+    public EnumSet<GridFlags> getFlags() {
+        return EnumSet.of(GridFlags.DENSE_CAPACITY);
+    }
 
-	@Override
-	public boolean isWorldAccessible() {
-		return isWorldAccessable();
-	}
+    public boolean isWorldAccessable() {
+        return false;
+    }
 
-	@Override
-	public DimensionalCoord getLocation() {
-		return new DimensionalCoord(gridHost);
-	}
+    @Override
+    public boolean isWorldAccessible() {
+        return isWorldAccessable();
+    }
 
-	@Override
-	public AEColor getGridColor() {
-		return AEColor.Transparent;
-	}
+    @Override
+    public DimensionalCoord getLocation() {
+        return new DimensionalCoord(gridHost);
+    }
 
-	@Override
-	public void onGridNotification(GridNotification notification) {}
+    @Override
+    public AEColor getGridColor() {
+        return AEColor.Transparent;
+    }
 
-	@Override
-	public void setNetworkStatus(IGrid grid, int channelsInUse) {}
+    @Override
+    public void onGridNotification(GridNotification notification) {}
 
-	@Override
-	public EnumSet<ForgeDirection> getConnectableSides() {
-		return EnumSet.of(
-				ForgeDirection.DOWN, ForgeDirection.UP,
-				ForgeDirection.WEST, ForgeDirection.EAST,
-				ForgeDirection.NORTH, ForgeDirection.SOUTH
-				);
-	}
+    @Override
+    public void setNetworkStatus(IGrid grid, int channelsInUse) {}
 
-	@Override
-	public IGridHost getMachine() {
-		return (IGridHost) gridHost;
-	}
+    @Override
+    public EnumSet<ForgeDirection> getConnectableSides() {
+        return EnumSet.of(
+            ForgeDirection.DOWN,
+            ForgeDirection.UP,
+            ForgeDirection.WEST,
+            ForgeDirection.EAST,
+            ForgeDirection.NORTH,
+            ForgeDirection.SOUTH);
+    }
 
-	@Override
-	public void gridChanged() {}
+    @Override
+    public IGridHost getMachine() {
+        return (IGridHost) gridHost;
+    }
 
-	@Override
-	public ItemStack getMachineRepresentation() {
-		return null;
-	}
+    @Override
+    public void gridChanged() {}
+
+    @Override
+    public ItemStack getMachineRepresentation() {
+        return null;
+    }
 
 }

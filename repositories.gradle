@@ -1,0 +1,15 @@
+// Add any additional repositories for your dependencies here
+
+repositories {
+    maven {
+        name = "Mekanism Repo"
+        url 'https://maven.thorfusion.com/artifactory/thorfusion'
+    }
+    maven {
+        name "lookingglass"
+        url "http://maven.xcompwiz.com"
+        metadataSources {
+            artifact()
+        }
+    }
+}
